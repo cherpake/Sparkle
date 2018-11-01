@@ -67,6 +67,12 @@
         [self updateAlertFinishedWithChoice:SUInstallUpdateChoice];
         return;
     }
+    
+    if ([[updater delegate] respondsToSelector:@selector(updater:shouldShowUpdateAlertForItem:)] ) {
+        if ( ![[updater delegate] updater:self.updater shouldShowUpdateAlertForItem:self.updateItem] ) {
+            return;
+        }
+    }
 
     self.updateAlert = [[SUUpdateAlert alloc] initWithAppcastItem:self.updateItem host:self.host completionBlock:^(SUUpdateAlertChoice choice) {
         [self updateAlertFinishedWithChoice:choice];
